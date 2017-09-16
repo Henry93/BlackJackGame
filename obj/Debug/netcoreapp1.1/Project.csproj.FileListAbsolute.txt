@@ -1,0 +1,8 @@
+/Users/hennadiylehendzevych/Desktop/Project/Project/bin/Debug/netcoreapp1.1/Project.deps.json
+/Users/hennadiylehendzevych/Desktop/Project/Project/bin/Debug/netcoreapp1.1/Project.runtimeconfig.json
+/Users/hennadiylehendzevych/Desktop/Project/Project/bin/Debug/netcoreapp1.1/Project.runtimeconfig.dev.json
+/Users/hennadiylehendzevych/Desktop/Project/Project/bin/Debug/netcoreapp1.1/Project.dll
+/Users/hennadiylehendzevych/Desktop/Project/Project/bin/Debug/netcoreapp1.1/Project.pdb
+/Users/hennadiylehendzevych/Desktop/Project/Project/obj/Debug/netcoreapp1.1/Project.AssemblyInfo.cs
+/Users/hennadiylehendzevych/Desktop/Project/Project/obj/Debug/netcoreapp1.1/Project.dll
+/Users/hennadiylehendzevych/Desktop/Project/Project/obj/Debug/netcoreapp1.1/Project.pdb
