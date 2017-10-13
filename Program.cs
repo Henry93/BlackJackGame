@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
@@ -52,11 +52,11 @@ namespace BlackJackGame
 
                 if (i <= 8)
                 {
-                    cards[cards.Count - 1].Value = i + 1;
+                    cards[cards.Count - 1].Value = i + 1; // make values add up from 0 to 9
                 }
                 else
                 {
-                    cards[cards.Count - 1].Value = 10;
+                    cards[cards.Count - 1].Value = 10; // values > 9 will have value of 10
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace BlackJackGame
 
             Card cardToReturn = cards[cards.Count - 1];
             cards.RemoveAt(cards.Count - 1);
-            return cardToReturn;
+            return cardToReturn; // reduces the size of the deck as the user plays
             
         }
 
@@ -139,30 +139,36 @@ namespace BlackJackGame
                     userHand.Add(deck.DrawACard());
                     userHand.Add(deck.DrawACard());
 
+                    var aceCount = 0;
+
                     foreach (Card card in userHand)
                     {
-                        if (card.Cards == Face.Ace)
-                        {
-                            card.Value += 10;
-                        }
-
                         // Let the player choose the value of Ace
                         if (card.Cards == Face.Ace)
                         {
-                            System.Console.WriteLine("You got an Ace! Would you like to set its value to 1 or 11?");
-                            string reply = System.Console.ReadLine();
+                            while (true)
+                            {
+                                System.Console.WriteLine("You got an Ace! Would you like to set its value to 1 or 11?");
+                                string reply = System.Console.ReadLine();
 
-                            if (reply == "1")
-                            {
-                                card.Value = 1;
-                                continue;
+                                if (reply == "1")
+                                {
+                                    card.Value = 1;
+                                    aceCount++;
+                                    break;
+                                }
+                                else if (reply == "11")
+                                {
+                                    card.Value = 11;
+                                    aceCount++;
+                                    break;
+                                }
+                                else
+                                {
+                                    System.Console.WriteLine("Wrong value, please try again!");
+                                    continue;
+                                }
                             }
-                            else if (reply == "11")
-                            {
-                                card.Value = 11;
-                                continue;
-                            }
-                            break;
                         }
                     }
 
@@ -174,14 +180,6 @@ namespace BlackJackGame
                     dealerHand = new List<Card>();
                     dealerHand.Add(deck.DrawACard());
                     dealerHand.Add(deck.DrawACard());
-
-                    foreach (Card card in dealerHand)
-                    {
-                        if (card.Cards == Face.Ace)
-                        {
-                            card.Value += 10;
-                        }
-                    }
 
                     System.Console.WriteLine("<DEALER>\n");
                     System.Console.WriteLine("Card 1: {0}", dealerHand[0].Cards);
@@ -197,31 +195,74 @@ namespace BlackJackGame
 
                         if (answer == "h")
                         {
-                                userHand.Add(deck.DrawACard());
-                                System.Console.WriteLine("Hitted: {0}", userHand[userHand.Count - 1].Cards);
-                                int totalCardsValue = 0;
+                            userHand.Add(deck.DrawACard());
+                            System.Console.WriteLine("Hitted: {0}", userHand[userHand.Count - 1].Cards);
+                            int totalCardsValue = 0;
 
-                                foreach (Card card in userHand)
+                            foreach (Card card in userHand)
+                            {
+                                // var result = card.Cards;
+                                // result += 1;
+                                // System.Console.WriteLine(result);
+                                
+                                if (aceCount == 0)
                                 {
-                                    totalCardsValue += card.Value;
+                                    while (card.Cards == Face.Ace && aceCount == 0)
+                                    {
+                                        System.Console.WriteLine("You got an Ace! Would you like to set its value to 1 or 11?");
+                                        string reply = System.Console.ReadLine();
+
+                                        if (reply == "1")
+                                        {
+                                            card.Value = 1;
+                                            totalCardsValue += card.Value;
+                                            totalCardsValue -= 1;
+                                            aceCount++;
+                                            break;
+                                        }
+                                        else if (reply == "11")
+                                        {
+                                            card.Value = 11;
+                                            totalCardsValue += card.Value;
+                                            totalCardsValue -= 10;
+                                            aceCount++;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            System.Console.WriteLine("Wrong value, please try again!");
+                                            continue;
+                                        }
+                                    }
                                 }
 
-                                System.Console.WriteLine("Total card value now is: {0}", totalCardsValue);
-
-                                if (totalCardsValue > 21)
+                                var faceValue = (int)card.Value;
+                                if (faceValue < 10)
                                 {
-                                    System.Console.WriteLine("You busted! Dealer won the game!");
-                                    break;
-                                }
-                                else if (totalCardsValue == 21)
-                                {
-                                    System.Console.WriteLine("You got a BlackJack! Good job!");
-                                    continue;
+                                    totalCardsValue += faceValue;
                                 }
                                 else
                                 {
-                                    continue;
+                                    totalCardsValue += 10;
                                 }
+                            }
+
+                            System.Console.WriteLine("Total card value now is: {0}", totalCardsValue);
+
+                            if (totalCardsValue > 21)
+                            {
+                                System.Console.WriteLine("You busted! Dealer won the game!");
+                                break;
+                            }
+                            else if (totalCardsValue == 21)
+                            {
+                                System.Console.WriteLine("You got a BlackJack! Good job!");
+                                continue;
+                            }
+                            else
+                            {
+                                continue;
+                            }
                         }
                         else if (answer == "s")
                         {
